@@ -23,7 +23,7 @@ void main() {
           address: 'example.org/changed',
         ),
       );
-      store.reorder(0, 2);
+      store.reorder(0, 1);
       await store.flush();
       var loaded = await WebsiteStore.load();
       expect(loaded.sites.map((s) => s.id), ['b', 'a']);

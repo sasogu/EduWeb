@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'website_backup.dart';
@@ -14,27 +13,17 @@ class DeviceWebsiteTransferFiles implements WebsiteTransferFiles {
 
   @override
   Future<String?> read() async {
-    final result = await FilePicker.platform.pickFiles(
+    final file = await FilePicker.pickFile(
       dialogTitle: 'Importa les webs',
       type: FileType.custom,
       allowedExtensions: ['json'],
-      withReadStream: true,
     );
-    if (result == null) return null;
-    final file = result.files.single;
-    if (file.size > WebsiteBackup.maxBytes) {
+    if (file == null) return null;
+    if ((await file.length() ?? 0) > WebsiteBackup.maxBytes) {
       throw const FormatException('El fitxer supera el límit d’1 MB.');
     }
-    final stream =
-        file.readStream ??
-        (file.path == null
-            ? null
-            : File(file.path!).openRead(0, WebsiteBackup.maxBytes + 1));
-    if (stream == null) {
-      throw const FormatException('No s’ha pogut llegir el fitxer.');
-    }
     final bytes = BytesBuilder(copy: false);
-    await for (final chunk in stream) {
+    await for (final chunk in file.readAsByteStream()) {
       if (bytes.length + chunk.length > WebsiteBackup.maxBytes) {
         throw const FormatException('El fitxer supera el límit d’1 MB.');
       }
@@ -52,11 +41,10 @@ class DeviceWebsiteTransferFiles implements WebsiteTransferFiles {
   @override
   Future<bool> save(String content) async {
     final date = DateTime.now().toIso8601String().substring(0, 10);
-    final path = await FilePicker.platform.saveFile(
+    final path = await FilePicker.saveFile(
       dialogTitle: 'Exporta les webs',
       fileName: 'eduweb-webs-$date.json',
-      type: FileType.custom,
-      allowedExtensions: ['json'],
+      mimeType: 'application/json',
       bytes: Uint8List.fromList(utf8.encode(content)),
     );
     return path != null;

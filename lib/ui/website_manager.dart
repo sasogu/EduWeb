@@ -156,7 +156,7 @@ class _WebsiteManagerState extends State<WebsiteManager> {
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   buildDefaultDragHandles: false,
                   itemCount: store.sites.length,
-                  onReorder: store.reorder,
+                  onReorderItem: store.reorder,
                   itemBuilder: (context, index) {
                     final site = store.sites[index];
                     return ListTile(

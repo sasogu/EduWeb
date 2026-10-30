@@ -5,7 +5,7 @@ version: 0.3.0+3
 environment:
   sdk: ^3.9.2
   # Pinned SDK; see ~/.local/bin/flutterw and flutter-update-watch.
-  flutter: 3.35.7
+  flutter: 3.47.9
 dependencies:
   flutter:
     sdk: flutter
@@ -16,12 +16,12 @@ dependencies:
   webview_flutter_android: ^4.10.0
   webview_flutter_wkwebview: ^3.23.0
   url_launcher: ^6.3.2
-  file_picker: ^10.3.0
+  file_picker: ^13.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
   integration_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 flutter:
   uses-material-design: true

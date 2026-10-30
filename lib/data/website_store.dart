@@ -100,8 +100,8 @@ class WebsiteStore extends ChangeNotifier {
     _persist();
   }
 
+  /// Moves a site; [newIndex] is its final position (as onReorderItem gives).
   void reorder(int oldIndex, int newIndex) {
-    if (newIndex > oldIndex) newIndex--;
     _sites = [..._sites];
     final site = _sites.removeAt(oldIndex);
     _sites.insert(newIndex, site);

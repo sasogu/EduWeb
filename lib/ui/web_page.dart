@@ -69,14 +69,11 @@ class WebPageState extends State<WebPage> {
         await AndroidWebViewController.enableDebugging(kDebugMode);
         await android.setOnShowFileSelector((params) async {
           if (!_canShowDialog) return [];
-          final files = await FilePicker.platform.pickFiles(
-            allowMultiple: params.mode == FileSelectorMode.openMultiple,
-          );
-          return files?.paths
-                  .whereType<String>()
-                  .map((path) => Uri.file(path).toString())
-                  .toList() ??
-              [];
+          // The WebView accepts content:// URIs, which may have no local path.
+          final files = params.mode == FileSelectorMode.openMultiple
+              ? await FilePicker.pickFiles()
+              : [?await FilePicker.pickFile()];
+          return files.map((file) => file.uri.toString()).toList();
         });
       }
       if (controller.platform case final WebKitWebViewController webkit) {
