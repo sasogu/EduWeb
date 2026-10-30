@@ -4,6 +4,8 @@ publish_to: none
 version: 0.3.0+3
 environment:
   sdk: ^3.9.2
+  # Pinned SDK; see ~/.local/bin/flutterw and flutter-update-watch.
+  flutter: 3.35.7
 dependencies:
   flutter:
     sdk: flutter
